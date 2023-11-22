@@ -78,9 +78,9 @@ del03          pla
 ; Display six 7-seg codes starting at mytext01 + txct
 ; Uses: A, X, Y
 
-disp7seg       ldx #0
+disp7seg       ldx #0		; get rid of "ghost" artefact in the 1st
+               stx SAD        	; column of 7-seg display
                ldy txct
-               stx SAD        ; attempt at getting rid of "ghost" artefacts
 d7seg01        lda digsel,x
                sta SBD
                lda mytext01,y
@@ -88,6 +88,8 @@ d7seg01        lda digsel,x
                lda #$01
                sta delct1
                jsr delay
+               lda #0         	; get rid of "ghost" artefact in the first
+               sta SAD        	; empty 7-seg digit trailing the lit one
                iny
                inx
                cpx #6
